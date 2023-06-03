@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
                 ) {
 
                     LoginScreen()
-                    //MyScreen()
+
                 }
             }
         }
@@ -42,7 +42,7 @@ fun LoginScreen() {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val background_logo = painterResource(id = R.drawable.logo_color_whitebackground)
-    val background_waves = painterResource(id = R.drawable.background_fusion)
+    val background_waves = painterResource(id = R.drawable.background_wellen)
 
         Image(
             painter = background_logo,
@@ -101,21 +101,4 @@ fun LoginScreen() {
                 Text(text = "Sign in")
             }
         }
-}
-
-
-@Composable
-fun MyScreen() {
-    val background = painterResource(R.drawable.background_fusion)
-
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Image(
-            painter = background,
-            contentDescription = "Background1",
-            modifier = Modifier.fillMaxSize()
-        )
-
-    }
 }
