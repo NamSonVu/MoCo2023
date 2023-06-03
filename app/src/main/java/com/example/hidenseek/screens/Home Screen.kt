@@ -1,68 +1,40 @@
-package com.example.hidenseek
+package com.example.hidenseek.screens
 
 import android.annotation.SuppressLint
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.Icon
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale.Companion.FillBounds
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.example.hidenseek.ui.theme.HideNSeekTheme
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.getValue
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.hidenseek.screens.BottomBar
-import androidx.compose.foundation.lazy.LazyColumn
+import com.example.hidenseek.BottomBarScreen
+import com.example.hidenseek.BottomNavGraph
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun MainScreen() {
+    val navController = rememberNavController()
+    Scaffold(
+        bottomBar = { BottomBar(navController = navController) }
+    ) {
+        BottomNavGraph(navController = navController)
 
-
-
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            HideNSeekTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    //Greeting("Android")
-                    MyScreen()
-                    //HomeScreen()
-                }
-            }
-        }
     }
 }
 
 
+//MyScreen()
+/*
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview(showBackground = true)
 @Composable
@@ -89,25 +61,27 @@ fun MyScreen() {
             painter = background,
             contentDescription = "Background image",
             modifier = Modifier.fillMaxSize(),
-            contentScale = FillBounds
+            contentScale = ContentScale.FillBounds
         )
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(16.dp)
         ) {
-            item {
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(16.dp)
+            ) {
+
                 Image(
                     painter = logo,
-                    contentDescription = "Logo image",
+                    contentDescription = "Background image",
                     modifier = Modifier
                         .size(200.dp)
                         .padding(bottom = 16.dp)
                 )
-            }
 
-            item {
                 Text(
                     text = "New Game",
                     style = TextStyle(
@@ -119,7 +93,15 @@ fun MyScreen() {
                 )
             }
 
-            item {
+            //Spacer(modifier = Modifier.height(100.dp))
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(16.dp)
+            ) {
+
+                //Text(text = "ADD SEEKER", modifier = Modifier.padding(bottom = 8.dp))
+
                 TextInputField(
                     label = "Add Seeker",
                     value = "", // Provide the initial value here
@@ -137,10 +119,9 @@ fun MyScreen() {
                 ) {
                     Text(text = "Add more Seekers")
                 }
-                Spacer(modifier = Modifier.height(10.dp))
-            }
 
-            item {
+                Spacer(modifier = Modifier.height(10.dp))
+
                 TextInputField(
                     label = "Add Hider",
                     value = "", // Provide the initial value here
@@ -158,9 +139,7 @@ fun MyScreen() {
                 ) {
                     Text(text = "Add more Hiders")
                 }
-            }
 
-            item {
                 Spacer(modifier = Modifier.height(30.dp))
 
                 Button(
@@ -173,8 +152,6 @@ fun MyScreen() {
                 Spacer(modifier = Modifier.height(100.dp))
             }
         }
-
-
     }
 
 }
@@ -201,3 +178,64 @@ fun TextInputField(
         )
     }
 }
+ */
+
+
+@Composable
+fun BottomBar(navController: NavHostController) {
+    val screens = listOf(
+        BottomBarScreen.Home,
+        BottomBarScreen.Games,
+        BottomBarScreen.Settings
+    )
+
+    //observing navBackStackEntry + notifies when a change appears
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+    BottomNavigation {
+        screens.forEach { screen ->
+            AddItem(
+                screen = screen,
+                currentDestination = currentDestination,
+                navController = navController
+            )
+        }
+    }
+}
+
+@Composable
+//Extension Function on a rowscope
+fun RowScope.AddItem(
+    screen: BottomBarScreen,
+    currentDestination: NavDestination?,
+    navController: NavHostController
+) {
+    BottomNavigationItem(
+        label = {
+            Text(text = screen.title)
+        },
+        icon = {
+            Icon(
+                imageVector = screen.icon,
+                contentDescription = "Navigation Icon"
+            )
+        },
+        selected = currentDestination?.hierarchy?.any {
+            it.route == screen.route
+        } == true,
+        unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
+        onClick = {
+            navController.navigate(screen.route) {
+                launchSingleTop = true
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+                restoreState = true
+
+            }
+        }
+    )
+}
+
+
