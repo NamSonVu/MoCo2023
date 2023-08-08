@@ -64,6 +64,7 @@ class MainActivity : ComponentActivity() {
 }
 
 
+// Screen der Gruppenerstellung
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview(showBackground = true)
 @Composable

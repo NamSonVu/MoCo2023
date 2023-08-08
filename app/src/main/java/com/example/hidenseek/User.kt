@@ -1,5 +1,6 @@
 package com.example.hidenseek
 
+// Idee der Verlagerung der Datenklassen als einzelne Kotlindateien
 data class userObj(
     // on below line creating variables
     // for employee name, contact number
