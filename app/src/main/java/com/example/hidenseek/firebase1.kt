@@ -24,6 +24,14 @@ import androidx.compose.ui.unit.sp
 import com.example.hidenseek.ui.theme.HideNSeekTheme
 import com.google.firebase.database.*
 
+
+
+/*
+    - Screenvorlage als Test (noch nicht getestet)
+    - Idee ist es diese Datei als Activity zu starten, wenn der Continue-Knopf des Gruppenerstellungs-Screens getätigt wird
+    - noch nicht funktionstauglich
+
+ */
 class firebase1 : ComponentActivity() {
     @SuppressLint("UnrememberedMutableState", "UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {

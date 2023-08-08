@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
+// Screen der das eigentliche Spiel darstellt
 @Composable
 fun GameScreen() {
     Column(modifier = Modifier

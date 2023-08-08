@@ -12,6 +12,13 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 
+
+/*
+    - Firebase Datenbank
+    - Initialisierung der Datenbank
+
+    !! noch nicht funktionstauglich
+ */
 fun fire_Storage(){
     // Write a message to the database
     val database = Firebase.database
@@ -37,12 +44,15 @@ fun fire_Storage(){
 
 }
 
+
+// Datenklasse für die Nutzer, zur Speicherung von Nutzernamen und Email-Adressen
 @IgnoreExtraProperties
 data class User(val username: String? = null, val email: String? = null) {
     // Null default values create a no-argument default constructor, which is needed
     // for deserialization from a DataSnapshot.
 }
 
+//Hinzufügen der Nutzer
 fun writeNewUser(userId: String, name: String, email: String) {
     var database: DatabaseReference = Firebase.database.reference
 
@@ -53,7 +63,7 @@ fun writeNewUser(userId: String, name: String, email: String) {
     database.child("users").child(userId).child("username").setValue(name)
 
 
-
+    // Feedback bei der Userdatenerfassung
     database.child("users").child(userId).setValue(user)
         .addOnSuccessListener {
             // Write was successful!
